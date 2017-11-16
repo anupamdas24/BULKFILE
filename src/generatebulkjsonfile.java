@@ -10,14 +10,30 @@ import org.json.simple.JSONObject;
 
 public class generatebulkjsonfile {
 	
-//	static Scanner sc=new Scanner(System.in);
-//	
-//	static int size=sc.nextInt();
-//	static String sizeFormat=sc.nextLine();
-//	final static long sizeinBytes = 524288000;
-	final static long sizeinBytes=2048;
+	public static long getSize(){
+		
+		System.out.println("Please enter the size in numerics");
+		Scanner snum=new Scanner(System.in);
+		int num=snum.nextInt();
+		System.out.println("Please enter the format of Size in B, KB , MB or GB");
+		Scanner stype=new Scanner(System.in);
+		long sizeinBytes = 0 ;
+		switch(stype.nextLine()){
+		case "GB" : sizeinBytes=num*1024*1024*1024 ; break;
+		case "MB" : sizeinBytes=num*1024*1024 ;break;
+		case "KB" : sizeinBytes= num*1024; break;
+		default :
+			sizeinBytes=sizeinBytes;
+		
+		}
+		return sizeinBytes;
+		
+	}
 
 	public static void main(String args[]) throws IOException {
+		
+		long ressizeinBytes=getSize();
+		System.out.println(ressizeinBytes);
 		JSONObject ob = new JSONObject();
 		ob.put("name", "dap");
 		ob.put("sprint#", "30_New");
@@ -25,17 +41,9 @@ public class generatebulkjsonfile {
 		list.add("name1");
 		list.add("name2");
 		ob.put("messages", list);
-		// find out the difference between FileWriter and BufferedWriter
 		File f = new File(System.getProperty("user.dir") + File.separator + "FilePlace.json");
-//		switch(sizeFormat){
-//		
-//		case "MB" : sizeinBytes=1024*1024*size; 
-//		case "KB" : sizeinBytes=1024*size; 
-//		case "GB" : sizeinBytes=1024*1024*1024*size; 
-//		
-//		}
 		try (BufferedWriter wr = Files.newBufferedWriter(f.toPath())) {
-			while (f.length() < sizeinBytes) {
+			while (f.length() < ressizeinBytes) {
 				wr.write(ob.toJSONString());
 				wr.flush();
 			}
